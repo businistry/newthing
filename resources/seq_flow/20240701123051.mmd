@@ -1,0 +1,45 @@
+
+sequenceDiagram
+    participant U as User
+    participant A as AuthenticationSystem
+    participant IS as IncomeStreamService
+    participant UIS as UserIncomeStreamService
+    participant E as EarningsService
+    participant AN as AnalyticsService
+    participant ED as EducationService
+
+    U->>A: register(username, email, password)
+    A-->>U: return user
+
+    U->>A: login(username, password)
+    A-->>U: return auth_token
+
+    U->>IS: get_available_income_streams()
+    IS-->>U: return income_streams
+
+    U->>UIS: invest(user, income_stream, amount)
+    UIS->>IS: validate_investment(income_stream, amount)
+    IS-->>UIS: return validation_result
+    UIS->>UIS: create_user_income_stream(user, income_stream, amount)
+    UIS-->>U: return investment_confirmation
+
+    U->>UIS: toggle_auto_reinvest(user_income_stream)
+    UIS->>UIS: update_auto_reinvest_setting(user_income_stream)
+    UIS-->>U: return updated_settings
+
+    U->>E: get_earnings(user, date_range)
+    E->>UIS: get_user_income_streams(user)
+    UIS-->>E: return user_income_streams
+    E->>E: calculate_earnings(user_income_streams, date_range)
+    E-->>U: return earnings_report
+
+    U->>AN: generate_analytics_report(user)
+    AN->>E: get_all_earnings(user)
+    E-->>AN: return all_earnings
+    AN->>AN: calculate_roi(all_earnings)
+    AN->>AN: predict_future_earnings(all_earnings)
+    AN-->>U: return analytics_report
+
+    U->>ED: get_educational_resources(resource_type)
+    ED->>ED: fetch_resources(resource_type)
+    ED-->>U: return educational_resources

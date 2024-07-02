@@ -1,0 +1,73 @@
+
+classDiagram
+    class User {
+        +str username
+        +str email
+        +str password
+        +date joined_date
+        +bool is_active
+        +register()
+        +login()
+        +logout()
+    }
+
+    class Profile {
+        +User user
+        +str risk_tolerance
+        +float total_earnings
+        +update_profile()
+        +get_total_earnings()
+    }
+
+    class IncomeStream {
+        +str name
+        +str description
+        +float min_investment
+        +float expected_return
+        +str risk_level
+        +create_stream()
+        +update_stream()
+        +delete_stream()
+    }
+
+    class UserIncomeStream {
+        +User user
+        +IncomeStream income_stream
+        +float invested_amount
+        +date investment_date
+        +bool auto_reinvest
+        +invest()
+        +withdraw()
+        +toggle_auto_reinvest()
+    }
+
+    class Earnings {
+        +UserIncomeStream user_income_stream
+        +float amount
+        +date earning_date
+        +record_earning()
+        +get_earnings_by_date_range()
+    }
+
+    class Analytics {
+        +User user
+        +generate_report()
+        +calculate_roi()
+        +predict_future_earnings()
+    }
+
+    class EducationResource {
+        +str title
+        +str content
+        +str resource_type
+        +date publication_date
+        +create_resource()
+        +update_resource()
+        +delete_resource()
+    }
+
+    User "1" -- "1" Profile
+    User "1" -- "*" UserIncomeStream
+    IncomeStream "1" -- "*" UserIncomeStream
+    UserIncomeStream "1" -- "*" Earnings
+    User "1" -- "1" Analytics
